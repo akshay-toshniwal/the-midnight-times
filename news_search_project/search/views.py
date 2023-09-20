@@ -6,8 +6,21 @@ from django.urls import reverse
 from .models import SearchResult
 
 
+def fetch_api_response(url, params):
+    """
+    Fetches API response given the URL and parameters.
+    """
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise
+
+
 class SearchView(View):
     template_name = 'search/search.html'
+    API_URL = "https://api.thenewsapi.com/v1/news/all"
 
     def get(self, request):
         return render(request, self.template_name)
@@ -16,10 +29,9 @@ class SearchView(View):
         query = request.POST.get('query', '')
 
         params = {'api_token': 'IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg', 'limit': 1, 'search': query}
-        response  = requests.get("https://api.thenewsapi.com/v1/news/all", params=params)
-        data = response.json()
+        response = fetch_api_response(self.API_URL, params)
 
-        for article in data.get('data', []):
+        for article in response.get('data', []):
             SearchResult.objects.create(
                 search_query=query,
                 title=article.get('title', ''),
@@ -37,14 +49,16 @@ class PreviousSearchesView(View):
         return render(request, self.template_name, {'searches': search_results})
     
 class RefreshResultsView(View):
+    API_URL = "https://api.thenewsapi.com/v1/news/all"
+
     def post(self, request):
         query_id = request.POST.get('query_id')
         search_result = SearchResult.objects.get(pk=query_id)
         
         params = {'api_token': 'IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg', 'limit': 1, 'search': search_result.search_query}
-        response  = requests.get("https://api.thenewsapi.com/v1/news/all", params=params)
+        response  = fetch_api_response(self.API_URL, params)
         if response:
-            data = response.json()['data'][0]
+            data = response.get('data')[0]
             search_result.title=data.get('title', '')
             search_result.description=data.get('description', '')
             search_result.url=data.get('url', '')

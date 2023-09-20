@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News Search</title>
+</head>
+<body>
+    <h1>News Search</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="query">Enter a keyword to search for news:</label><br>
+        <input type="text" id="query" name="query"><br><br>
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>

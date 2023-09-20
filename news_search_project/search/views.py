@@ -4,6 +4,7 @@ from django.views import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import SearchResult
+from django.conf import settings  
 
 
 def fetch_api_response(url, params):
@@ -11,6 +12,7 @@ def fetch_api_response(url, params):
     Fetches API response given the URL and parameters.
     """
     try:
+        params["api_token"] = settings.NEWS_API_KEY
         response = requests.get(url, params=params)
         response.raise_for_status()
         return response.json()
@@ -28,7 +30,7 @@ class SearchView(View):
     def post(self, request):
         query = request.POST.get('query', '')
 
-        params = {'api_token': 'IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg', 'limit': 1, 'search': query}
+        params = {'limit': 1, 'search': query}
         response = fetch_api_response(self.API_URL, params)
 
         for article in response.get('data', []):
@@ -55,7 +57,7 @@ class RefreshResultsView(View):
         query_id = request.POST.get('query_id')
         search_result = SearchResult.objects.get(pk=query_id)
         
-        params = {'api_token': 'IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg', 'limit': 1, 'search': search_result.search_query}
+        params = {'limit': 1, 'search': search_result.search_query}
         response  = fetch_api_response(self.API_URL, params)
         if response:
             data = response.get('data')[0]

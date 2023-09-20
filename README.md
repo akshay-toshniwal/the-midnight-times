@@ -8,24 +8,24 @@ This is a Django-based web application that allows users to search for news arti
 - pip
 - virtualenv (optional, but recommended)
 
-  # Install virtualenv if not already installed
-
+### Install virtualenv if not already installed
+  ```
   pip install virtualenv
-
-  # Create a virtual environment (replace 'venv' with your preferred name)
-
+```
+### Create a virtual environment (replace 'venv' with your preferred name)
+```
   virtualenv venv
+```
+### Activate the virtual environment
 
-  # Activate the virtual environment
-
-  # On Windows:
-
+  #### On Windows:
+```
   venv\Scripts\activate
-
-  # On macOS and Linux:
-
+```
+  #### On macOS and Linux:
+```
   source venv/bin/activate
-
+```
 ## Getting Started
 
 1. Clone the repository:

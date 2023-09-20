@@ -40,17 +40,26 @@ This is a Django-based web application that allows users to search for news arti
    ```
    pip install -r requirements.txt
    ```
+3. Rename `.env_sample` as `.env`
 
-3. Migrate the database:
+    - Set `NEWS_API_TOKEN` with valid value
+  
+4. Migrate the database:
 
    ```
    python manage.py migrate
    ```
 
-4. Run the development server:
+5. Run the development server:
 
    ```
    python manage.py runserver
    ```
 
-5. Access the application in your web browser at http://localhost:8000/
+6. Access the application in your web browser at http://localhost:8000/
+
+### Time Taken to Complete project
+  - 7 Hours
+
+### Overall experience of working on this project
+  - Overall, the experience was positive. The project was simple, however managing it after work hours was difficult because of my job at the time.

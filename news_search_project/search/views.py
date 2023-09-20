@@ -10,7 +10,16 @@ from django.conf import settings
 def fetch_api_response(url, params):
     """
     Fetches API response given the URL and parameters.
+
+    Parameters:
+    url (str): The API URL to make the request to.
+    params (dict): The parameters to include in the API request.
+
+    Returns:
+    list: A list of API response data.
     """
+
+
     try:
         params["api_token"] = settings.NEWS_API_KEY
         response = requests.get(url, params=params)
@@ -21,13 +30,50 @@ def fetch_api_response(url, params):
 
 
 class SearchView(View):
+    """
+    View for handling search requests and storing results.
+
+    Attributes:
+    template_name (str): The template to use for rendering the view.
+    API_URL (str): The URL for the external API.
+    """
+
+
     template_name = 'search/search.html'
     API_URL = "https://api.thenewsapi.com/v1/news/all"
 
     def get(self, request):
+        """
+        Handles GET requests to display the search view.
+
+        Renders the search template.
+
+        Parameters:
+        request (HttpRequest): The HTTP request object.
+
+        Returns:
+        HttpResponse: Renders the search template.
+        """
+
+
         return render(request, self.template_name)
 
     def post(self, request):
+        """
+        Handles POST requests for the search view.
+
+        This method processes the POST request for a search query.
+        It retrieves the query from the request and uses it to make an API request.
+        It then processes the API response and stores the search result in the database.
+
+        Parameters:
+        request (HttpRequest): The HTTP request object.
+
+        Returns:
+        HttpResponseRedirect: Redirects to the previous searches view.
+        """
+
+
         query = request.POST.get('query', '')
 
         params = {'limit': 1, 'search': query}
@@ -44,16 +90,62 @@ class SearchView(View):
         return HttpResponseRedirect(reverse('previous_searches'))
 
 class PreviousSearchesView(View):
+    """
+    View for previous search results.
+
+    Attributes:
+    template_name (str): The template to use for rendering the view.
+    """
+    
+
     template_name = 'search/previous_searches.html'
 
     def get(self, request):
+        """
+        Handles GET requests to display the previous search results.
+
+        Retrieves all search results from the database and renders the
+        previous searches template with the search results.
+
+        Parameters:
+        request (HttpRequest): The HTTP request object.
+
+        Returns:
+        HttpResponse: Renders the previous searches template with the search results.
+        """
+
+
         search_results = SearchResult.objects.all()
         return render(request, self.template_name, {'searches': search_results})
     
 class RefreshResultsView(View):
+    """
+    View for refreshing search results.
+
+    Attributes:
+    API_URL (str): The URL for the external API.
+    """
+
+
     API_URL = "https://api.thenewsapi.com/v1/news/all"
 
     def post(self, request):
+        """
+        Handles POST requests for refreshing search results.
+
+        It retrieves the query ID from the request
+        and uses it to fetch the corresponding search result.
+        It then makes an API request to update the search result details,
+        and redirects to the previous searches view.
+
+        Parameters:
+        request (HttpRequest): The HTTP request object.
+
+        Returns:
+        HttpResponseRedirect: Redirects to the previous searches view.
+        """
+
+
         query_id = request.POST.get('query_id')
         search_result = SearchResult.objects.get(pk=query_id)
         

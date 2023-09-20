@@ -149,7 +149,12 @@ class RefreshResultsView(View):
         query_id = request.POST.get('query_id')
         search_result = SearchResult.objects.get(pk=query_id)
         
-        params = {'limit': 1, 'search': search_result.search_query}
+        params = {
+            'limit': 1,
+            'search': search_result.search_query,
+            'published_after':search_result.date_published.strftime('%Y-%m-%dT%H:%M:%S')
+            }
+
         response  = fetch_api_response(self.API_URL, params)
         if response:
             data = response.get('data')[0]

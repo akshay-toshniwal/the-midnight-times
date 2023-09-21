@@ -42,7 +42,7 @@ This is a Django-based web application that allows users to search for news arti
    ```
 3. Rename `.env_sample` as `.env`
 
-    - Set `NEWS_API_TOKEN` with valid value
+    - Set `NEWS_API_TOKEN` with valid value `IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg`
   
 4. Migrate the database:
 

@@ -122,7 +122,7 @@ class PreviousSearchesView(View):
         """
 
 
-        search_results = SearchResult.objects.all()
+        search_results = SearchResult.objects.filter(user=request.user)
         return render(request, self.template_name, {'searches': search_results})
     
 class RefreshResultsView(View):

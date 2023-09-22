@@ -1,10 +1,14 @@
 import requests
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from .models import SearchResult
-from django.conf import settings  
+from .forms import CustomUserCreationForm
 
 
 def fetch_api_response(url, params):
@@ -57,7 +61,8 @@ class SearchView(View):
 
 
         return render(request, self.template_name)
-
+    
+    @method_decorator(login_required)
     def post(self, request):
         """
         Handles POST requests for the search view.
@@ -81,6 +86,7 @@ class SearchView(View):
 
         for article in response.get('data', []):
             SearchResult.objects.create(
+                user = request.user,
                 search_query=query,
                 title=article.get('title', ''),
                 description=article.get('description', ''),
@@ -100,6 +106,7 @@ class PreviousSearchesView(View):
 
     template_name = 'search/previous_searches.html'
 
+    @method_decorator(login_required)    
     def get(self, request):
         """
         Handles GET requests to display the previous search results.
@@ -129,6 +136,7 @@ class RefreshResultsView(View):
 
     API_URL = "https://api.thenewsapi.com/v1/news/all"
 
+    @method_decorator(login_required)
     def post(self, request):
         """
         Handles POST requests for refreshing search results.
@@ -165,3 +173,20 @@ class RefreshResultsView(View):
             search_result.save()
         return redirect('previous_searches')
 
+class SignUpView(CreateView):
+    """
+    View for user sign-up using a custom user creation form.
+
+    This view extends Django's CreateView to handle user registration.
+    It uses a custom user creation form for registration.
+
+    Attributes:
+        form_class (type): The form class for user registration.
+        success_url (str): The URL to redirect to on successful registration.
+        template_name (str): The template to use for rendering the sign-up view.
+    
+    """
+        
+    form_class = CustomUserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"

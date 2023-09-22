@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+
+{% block title %}Previous Searches{% endblock %} 
+
+{%block content %}
+<h1 style="text-align: center">Previous Searches</h1>
+<table class="table" id="prev_search">
+  <thead>
+    <tr>
+      <th>Keyword</th>
+      <th>Title</th>
+      <th>Published Date</th>
+      <th>Link</th>
+      <th>Fetch Latest</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for search in searches %}
+    <tr>
+      <td>{{ search.search_query }}</td>
+      <td>{{ search.title }}</td>
+      <td>{{ search.date_published }}</td>
+      <td><a href="{{ search.url }}" target="_blank">read here</a></td>
+      <td>
+        <form action="{% url 'refresh_results' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="query_id" value="{{ search.id }}" />
+          <input
+            type="submit"
+            value="Latest news for '{{ search.search_query }}'"
+          />
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

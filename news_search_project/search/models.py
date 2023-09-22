@@ -1,4 +1,26 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    """
+    Model representing a custom user in the application.
+
+    This model extends the AbstractUser class from Django, adding custom
+    attributes and methods to enhance functionality and behavior.
+
+    Attributes:
+        is_blocked (bool): A boolean indicating whether the user is blocked or unblocked.
+
+    Methods:
+        __str__(): Returns a string representation of the username.
+    
+    """
+    
+    
+    is_blocked =  models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
 
 class SearchResult(models.Model):
     """
@@ -15,7 +37,7 @@ class SearchResult(models.Model):
     __str__(): Returns a string representation of the search result.
     """
 
-    
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     search_query = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     description = models.TextField()

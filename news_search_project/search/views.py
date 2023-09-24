@@ -81,14 +81,15 @@ class SearchView(View):
         """
 
 
-        query = request.POST.get('query', '')
+        query = request.POST.get('query').strip()
 
         cache_query = "user_{}_query_{}".format(str(request.user.id), query)
         cached_results = cache.get(cache_query)
-
-        if cached_results:
-            return HttpResponseRedirect(reverse('previous_searches'))
+        existing_query = SearchResult.objects.filter(query=query, user=request.user).first()
         
+        if cached_results or existing_query:
+            return HttpResponseRedirect(reverse('previous_searches'))
+
         params = {'limit': 1, 'search': query}
         response = fetch_api_response(self.API_URL, params)
 

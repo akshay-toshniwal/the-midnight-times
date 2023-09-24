@@ -38,7 +38,7 @@ class SearchResult(models.Model):
     """
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    search_query = models.CharField(max_length=255)
+    search_query = models.CharField(max_length=255, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     url = models.URLField()

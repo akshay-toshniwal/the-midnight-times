@@ -85,7 +85,7 @@ class SearchView(View):
 
         cache_query = "user_{}_query_{}".format(str(request.user.id), query)
         cached_results = cache.get(cache_query)
-        existing_query = SearchResult.objects.filter(query=query, user=request.user).first()
+        existing_query = SearchResult.objects.filter(search_query=query, user=request.user).first()
         
         if cached_results or existing_query:
             return HttpResponseRedirect(reverse('previous_searches'))
@@ -102,7 +102,7 @@ class SearchView(View):
                 description=article.get('description', ''),
                 url=article.get('url', ''),
                 date_published=article.get('published_at', ''),
-                language = article.get('published_at', ''),
+                language = article.get('language', ''),
                 source = article.get('source', ''),
                 categories = (article.get('categories') or ['',])[0]
             )
@@ -185,8 +185,8 @@ class RefreshResultsView(View):
             search_result.description=data.get('description', '')
             search_result.url=data.get('url', '')
             search_result.date_published=data.get('published_at', '')
-            search_result.language = data.get('published_at', ''),
-            search_result.source = data.get('source', ''),
+            search_result.language = data.get('language', '')
+            search_result.source = data.get('source', '')
             search_result.categories = (data.get('categories') or ['',])[0]    
             search_result.save()
         return redirect('previous_searches')

@@ -32,15 +32,16 @@
       <p><a href="{% url 'logout' %}">Log Out</a></p>
       {% endif %} 
       
-      {% block content %}
-      
-      {% endblock %} 
-      
       {% if not user.is_authenticated %}
       <p>You are not logged in</p>
       <a href="{% url 'login' %}">Log In</a> |
       <a href="{% url 'signup' %}">Sign Up</a>
       {% endif %}
+      
+      {% block content %}
+      
+      {% endblock %} 
+
     </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

@@ -124,7 +124,7 @@ NEWS_API_KEY = os.getenv('NEWS_API_TOKEN')
 AUTH_USER_MODEL = "search.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    "search.backends.CustomUserModelBackend",
 ]
 
 LOGIN_REDIRECT_URL = "search"

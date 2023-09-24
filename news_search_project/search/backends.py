@@ -5,6 +5,25 @@ from django.contrib import messages
 User = get_user_model()
 
 class CustomUserModelBackend(BaseBackend):
+    """
+    Custom authentication backend for a custom user model.
+
+    This backend allows authentication using the provided username and password
+    against the custom user model. It also handles blocking of users by the admin.
+
+    Attributes:
+        User (type): The custom user model.
+
+    Methods:
+        authenticate(request, username=None, password=None, **kwargs):
+            Authenticates a user based on the provided username and password.
+
+        get_user(user_id):
+            Retrieves a user based on the provided user ID.
+
+    """
+
+
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = User.objects.get(username=username)

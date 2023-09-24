@@ -32,6 +32,9 @@ class SearchResult(models.Model):
     description (str): A brief description of the article.
     url (str): The URL of the article.
     date_published (datetime): The date and time the article was published.
+    language (str): The language of article.
+    source (str): The URL of source.
+    categories (str): The category of article.
 
     Methods:
     __str__(): Returns a string representation of the search result.

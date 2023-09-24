@@ -75,7 +75,7 @@ This is a Django-based web application that allows users to search for news arti
   
 
 ### Time Taken to Complete project
-  - 7 Hours
+  - 12 Hours
 
 ### Overall experience of working on this project
   - Overall, the experience was positive. The project was simple, however managing it after work hours was difficult because of my job at the time.

@@ -92,6 +92,7 @@ class SearchView(View):
         params = {'limit': 1, 'search': query}
         response = fetch_api_response(self.API_URL, params)
 
+
         for article in response.get('data', []):
             SearchResult.objects.create(
                 user = request.user,
@@ -99,7 +100,10 @@ class SearchView(View):
                 title=article.get('title', ''),
                 description=article.get('description', ''),
                 url=article.get('url', ''),
-                date_published=article.get('published_at', '')
+                date_published=article.get('published_at', ''),
+                language = article.get('published_at', ''),
+                source = article.get('source', ''),
+                categories = (article.get('categories') or ['',])[0]
             )
 
         cache.set(cache_query, response, timeout=self.CACHED_TIMEOUT)
@@ -180,6 +184,9 @@ class RefreshResultsView(View):
             search_result.description=data.get('description', '')
             search_result.url=data.get('url', '')
             search_result.date_published=data.get('published_at', '')
+            search_result.language = data.get('published_at', ''),
+            search_result.source = data.get('source', ''),
+            search_result.categories = (data.get('categories') or ['',])[0]    
             search_result.save()
         return redirect('previous_searches')
 

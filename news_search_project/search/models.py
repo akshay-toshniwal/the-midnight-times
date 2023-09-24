@@ -43,6 +43,9 @@ class SearchResult(models.Model):
     description = models.TextField()
     url = models.URLField()
     date_published = models.DateTimeField()
+    language =  models.CharField(max_length=15)
+    source = models.URLField()
+    categories = models.CharField(max_length=30)
 
     def __str__(self):
         return self.title

@@ -10,6 +10,9 @@
       <th>Keyword</th>
       <th>Title</th>
       <th>Published Date</th>
+      <th>Category</th>
+      <th>Language</th>
+      <th>Source</th>
       <th>Link</th>
       <th>Fetch Latest</th>
     </tr>
@@ -20,6 +23,9 @@
       <td>{{ search.search_query }}</td>
       <td>{{ search.title }}</td>
       <td>{{ search.date_published }}</td>
+      <td>{{ search.category }}</td>
+      <td>{{ search.language }}</td>
+      <td>{{ search.source }}</td>
       <td><a href="{{ search.url }}" target="_blank">read here</a></td>
       <td>
         <form action="{% url 'refresh_results' %}" method="post">

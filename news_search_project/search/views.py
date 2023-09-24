@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.conf import settings
 from django.core.cache import cache
 from .models import SearchResult
@@ -88,6 +89,7 @@ class SearchView(View):
         existing_query = SearchResult.objects.filter(search_query=query, user=request.user).first()
         
         if cached_results or existing_query:
+            messages.info(request, "Previous searches ...")
             return HttpResponseRedirect(reverse('previous_searches'))
 
         params = {'limit': 1, 'search': query}
@@ -108,6 +110,7 @@ class SearchView(View):
             )
 
         cache.set(cache_query, response, timeout=self.CACHED_TIMEOUT)
+        messages.info(request, "Previous searches ...")
         return HttpResponseRedirect(reverse('previous_searches'))
 
 class PreviousSearchesView(View):
@@ -189,6 +192,8 @@ class RefreshResultsView(View):
             search_result.source = data.get('source', '')
             search_result.categories = (data.get('categories') or ['',])[0]    
             search_result.save()
+        
+        messages.info(request, "Updated search results for '{}'".format(search_result.search_query))
         return redirect('previous_searches')
 
 class SignUpView(CreateView):

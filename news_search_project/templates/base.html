@@ -16,6 +16,16 @@
 
   <body>
     <main>
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      </ul>
+      {% endif %}
+
       {% if user.is_authenticated %} 
       
         Hi {{ user.username }}!

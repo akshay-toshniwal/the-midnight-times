@@ -10,6 +10,8 @@ class CustomUserModelBackend(BaseBackend):
             user = User.objects.get(username=username)
             if user.check_password(password) and not user.is_blocked:
                 return user
+            elif user.is_blocked:
+                messages.warning(request, "User is been blocked by admin")
         except User.DoesNotExist:
             return None
 

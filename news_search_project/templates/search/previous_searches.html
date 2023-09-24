@@ -3,7 +3,11 @@
 {% block title %}Previous Searches{% endblock %} 
 
 {%block content %}
-<h1 style="text-align: center">Previous Searches</h1>
+<div class="row" style="margin-bottom: 2%;">
+<h1 style="text-align: center; width: 80%;">Previous Searches</h1>
+<button><a href="{% url 'search' %}">Search more news</a></button>
+</div>
+
 <table class="table" id="prev_search">
   <thead>
     <tr>

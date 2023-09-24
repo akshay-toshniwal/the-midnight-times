@@ -31,8 +31,8 @@ This is a Django-based web application that allows users to search for news arti
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/akshay-toshniwal/news-search-app.git
-   cd news-search-app
+   git clone https://github.com/akshay-toshniwal/the-midnight-times.git
+   cd the-midnight-times
    ```
 
 2. Install Django and project dependencies:
@@ -43,20 +43,36 @@ This is a Django-based web application that allows users to search for news arti
 3. Rename `.env_sample` as `.env`
 
     - Set `NEWS_API_TOKEN` with valid value `IVXtTaziYiHqSgUizaYabO0DQxBcIz0n6im1uVOg`
-  
-4. Migrate the database:
+
+4. To start with project
+    ```
+    cd news_search_project/
+    ```
+
+5. Migrate the database:
 
    ```
+   python manage.py makemigrations
    python manage.py migrate
    ```
+6. Create superuser (admin):
 
-5. Run the development server:
+   ```
+   python manage.py createsuperuser
+   ```
+   Follow the prompts for admin `username`, `password`
+
+8. Run the development server:
 
    ```
    python manage.py runserver
    ```
 
-6. Access the application in your web browser at http://localhost:8000/
+9. Access the application in your web browser at http://localhost:8000/
+
+10. Access the Admin interface of application in your web browser at http://localhost:8000/admin
+    - Login with same `username` which used while creating `superuser`
+  
 
 ### Time Taken to Complete project
   - 7 Hours

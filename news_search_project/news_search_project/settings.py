@@ -130,3 +130,10 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "search"
 
 LOGOUT_REDIRECT_URL = "login"
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 900,  # 15 minutes in seconds
+    }
+}

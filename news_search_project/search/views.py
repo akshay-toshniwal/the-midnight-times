@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.core.cache import cache
 from .models import SearchResult
 from .forms import CustomUserCreationForm
 
@@ -45,6 +46,7 @@ class SearchView(View):
 
     template_name = 'search/search.html'
     API_URL = "https://api.thenewsapi.com/v1/news/all"
+    CACHED_TIMEOUT = 900  # 15 minutes in seconds
 
     def get(self, request):
         """
@@ -81,6 +83,12 @@ class SearchView(View):
 
         query = request.POST.get('query', '')
 
+        cache_query = "user_{}_query_{}".format(str(request.user.id), query)
+        cached_results = cache.get(cache_query)
+
+        if cached_results:
+            return HttpResponseRedirect(reverse('previous_searches'))
+        
         params = {'limit': 1, 'search': query}
         response = fetch_api_response(self.API_URL, params)
 
@@ -93,6 +101,8 @@ class SearchView(View):
                 url=article.get('url', ''),
                 date_published=article.get('published_at', '')
             )
+
+        cache.set(cache_query, response, timeout=self.CACHED_TIMEOUT)
         return HttpResponseRedirect(reverse('previous_searches'))
 
 class PreviousSearchesView(View):
